@@ -1,25 +1,34 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutterrestapimysql/pages/home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
-class AddUser2 extends StatefulWidget {
-  const AddUser2({super.key});
+import 'package:flutterrestapimysql/pages/home.dart';
+
+class EditUser2 extends StatefulWidget {
+  final List users;
+  final int index;
+
+  const EditUser2({
+    Key? key,
+    required this.users,
+    required this.index,
+  }) : super(key: key);
 
   @override
-  State<AddUser2> createState() => _AddUser2State();
+  State<EditUser2> createState() => _EditUser2State();
 }
 
-class _AddUser2State extends State<AddUser2> {
+class _EditUser2State extends State<EditUser2> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController fullname = TextEditingController();
   TextEditingController user = TextEditingController();
   TextEditingController pwd = TextEditingController();
 
-  Future<void> addUser() async {
-    String urlstr = 'http://localhost/addressbook/insert.php';
+  Future<void> editUser() async {
+    String urlstr = 'http://localhost/addressbook/edit.php';
 
     final url = Uri.parse(urlstr);
     final response = await http.post(
@@ -47,7 +56,7 @@ class _AddUser2State extends State<AddUser2> {
         );
       } else {
         Fluttertoast.showToast(
-            msg: "Please check username",
+            msg: "Something went wrong",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -60,10 +69,19 @@ class _AddUser2State extends State<AddUser2> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // editMode = true;
+    fullname.text = widget.users[widget.index]['fullname'];
+    user.text = widget.users[widget.index]['username'];
+    pwd.text = widget.users[widget.index]['password'];
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add User'),
+        title: const Text('Edit User'),
       ),
       body: Form(
         key: _formKey,
@@ -77,7 +95,7 @@ class _AddUser2State extends State<AddUser2> {
               const SizedBox(
                 height: 100,
               ),
-              const Text('Add User Form',
+              const Text('Edit User Form',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -157,10 +175,10 @@ class _AddUser2State extends State<AddUser2> {
                     onPressed: () {
                       // Validate returns true if the form is valid, or false otherwise.
                       if (_formKey.currentState!.validate()) {
-                        addUser();
+                        // addUser();
                       }
                     },
-                    child: const Text('Add'),
+                    child: const Text('Edit'),
                   ),
                   ElevatedButton(
                     onPressed: () {},

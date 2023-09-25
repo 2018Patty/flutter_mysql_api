@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterrestapimysql/pages/adduser.dart';
 import 'package:flutterrestapimysql/pages/adduser2.dart';
 import 'package:flutterrestapimysql/pages/edituser.dart';
+import 'package:flutterrestapimysql/pages/edituser2.dart';
 import 'package:flutterrestapimysql/pages/login.dart';
 import 'package:flutterrestapimysql/pages/profile.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -123,13 +124,14 @@ class _HomeState extends State<Home> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditUser(
-                      list: users,
+                    builder: (context) => EditUser2(
+                      users: users,
                       index: index,
                     ),
                   ),
                 );
                 debugPrint('Edit Clicked');
+                debugPrint(index.toString());
               },
             ),
             title: Align(
